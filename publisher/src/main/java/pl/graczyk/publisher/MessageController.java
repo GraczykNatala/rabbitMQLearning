@@ -1,10 +1,8 @@
 package pl.graczyk.publisher;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import pl.graczyk.notification.Notification;
 
 @RestController
 public class MessageController {
@@ -16,10 +14,10 @@ public class MessageController {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    @GetMapping("/message")
-    public String sendMessage(@RequestParam String message) {
-        rabbitTemplate.convertAndSend("kurs", message);
-        return "Wrzucono wiadomość na RabbitMq";
-        // localhost:8080/message?message=aaaa
+
+    @PostMapping("/notification")
+    public String sendNotification(@RequestBody Notification notification){
+      rabbitTemplate.convertAndSend("kurs", notification);
+        return "Notyfikacja wysłana";
     }
 }
