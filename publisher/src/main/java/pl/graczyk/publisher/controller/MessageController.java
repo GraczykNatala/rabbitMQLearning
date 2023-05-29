@@ -1,8 +1,8 @@
-package pl.graczyk.publisher;
+package pl.graczyk.publisher.controller;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.web.bind.annotation.*;
-import pl.graczyk.notification.Notification;
+import pl.graczyk.publisher.model.Notification;
 
 @RestController
 public class MessageController {

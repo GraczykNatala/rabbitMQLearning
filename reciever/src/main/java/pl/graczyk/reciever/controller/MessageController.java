@@ -1,11 +1,12 @@
-package pl.graczyk.reciever;
+package pl.graczyk.reciever.controller;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.graczyk.notification.Notification;
+import pl.graczyk.reciever.model.Notification;
 
 @RestController
 public class MessageController {
@@ -20,9 +21,10 @@ public class MessageController {
 
     @GetMapping("/notification")
     public ResponseEntity<Notification> receiveNotification() {
-        Object notification = rabbitTemplate.receiveAndConvert("kurs");
-        if(notification instanceof Notification) {
-            return ResponseEntity.ok((Notification)notification);
+        Notification notification = rabbitTemplate
+                .receiveAndConvert("kurs", ParameterizedTypeReference.forType(Notification.class));
+        if(notification != null) {
+            return ResponseEntity.ok(notification);
         }
         return ResponseEntity.noContent()
                 .build();

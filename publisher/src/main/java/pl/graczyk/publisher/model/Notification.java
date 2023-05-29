@@ -1,8 +1,8 @@
-package pl.graczyk.notification;
+package pl.graczyk.publisher.model;
 
 import java.io.Serializable;
 
-public class Notification implements Serializable {
+public class Notification {
     private String email;
     private String title;
     private String body;
