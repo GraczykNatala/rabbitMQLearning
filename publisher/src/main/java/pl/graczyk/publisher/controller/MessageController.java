@@ -1,23 +1,21 @@
 package pl.graczyk.publisher.controller;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.web.bind.annotation.*;
-import pl.graczyk.publisher.model.Notification;
+import pl.graczyk.publisher.service.NotificationService;
 
 @RestController
 public class MessageController {
 
-    private final RabbitTemplate rabbitTemplate;
+    private final NotificationService notificationService;
 
 
-    public MessageController(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
+    public MessageController(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 
-
-    @PostMapping("/notification")
-    public String sendNotification(@RequestBody Notification notification){
-      rabbitTemplate.convertAndSend("kurs", notification);
-        return "Notyfikacja wysłana";
+    @GetMapping("/notifications")
+    public String sendStudentNotification(@RequestParam Long studentId) {
+        notificationService.sendStudentNotification(studentId);
+        return "Wiadomość została wysłana do studenta o id: " + studentId;
     }
 }
